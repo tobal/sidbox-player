@@ -5,5 +5,5 @@ class sidDisassembler(object):
         pass
 
     def disassembleByte(self, byte):
-        pass
+        return "LDA"
 
