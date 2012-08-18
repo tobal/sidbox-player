@@ -11,6 +11,6 @@ class sidDisassemblerTest(unittest.TestCase):
         pass
 
     def testOutputIsString(self):
-        output = self.sut.disassembleByte(0xA1)
+        output = self.sut.disassembleInstruction(0xA1)
         self.assertTrue( type(output) is str )
 
