@@ -1,10 +1,10 @@
 
 import unittest
-import sidDisassemblerTest
+import SidDisassemblerTest
 
 loader = unittest.TestLoader()
 
-suite = loader.loadTestsFromModule(sidDisassemblerTest)
+suite = loader.loadTestsFromModule(SidDisassemblerTest)
 
 runner = unittest.TextTestRunner(verbosity=2)
 result = runner.run(suite)
