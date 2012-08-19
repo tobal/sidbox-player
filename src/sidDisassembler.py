@@ -8,16 +8,18 @@ class AddressModes():
     INDIRECT = 5
     INDEXED = 6
     ABS_INDEXED = 7
-    INDIR_INDEXED =8
+    INDIR_INDEXED = 8
 
 class SidDisassembler(object):
 
     def __init__(self):
-        pass
+        self.Instructions = {
+                0xAD : ["LDA", AddressModes.ABSOLUTE]
+                        }
 
     def getInstructionAsAssembly(self, byte):
-        pass
+        return ""
 
     def disassembleInstruction(self, byte):
-        return "LDA"
+        return self.Instructions[byte]
 
