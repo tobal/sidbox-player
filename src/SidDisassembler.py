@@ -10,6 +10,10 @@ class AddressModes():
     ABS_INDEXED = 7
     INDIR_INDEXED = 8
 
+class Instruction():
+    mnemonic = ""
+    address = []
+
 class SidDisassembler(object):
 
     def __init__(self):
@@ -37,4 +41,8 @@ class SidDisassembler(object):
             return [0x01, 0x02]
         else:
             return [None]
+
+    def makeInstruction(self, instrType, address):
+        instruction = Instruction()
+        return instruction
 
