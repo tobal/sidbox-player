@@ -29,3 +29,6 @@ class SidDisassembler(object):
     def getAddrModeNumOfBytes(self, addrMode):
         return self.NumOfBytes[addrMode]
 
+    def getBytesFromFile(self, numOfBytes):
+        return [None]
+
