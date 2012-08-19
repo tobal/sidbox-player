@@ -30,11 +30,7 @@ class SidDisassemblerTest(unittest.TestCase):
         self.assertEquals(len(twoBytes), 2)
 
     def testGetAnInstructionWithAddress(self):
-        instrByte = self.sut.getBytesFromFile(1)
-        instrType = self.sut.disassembleInstruction(instrByte[0])
-        addrModeNumOfBytes = self.sut.getAddrModeNumOfBytes(instrType[1])
-        address = self.sut.getBytesFromFile(addrModeNumOfBytes)
-        instr = self.sut.makeInstruction(instrType, address)
+        instr = self.sut.getInstructionWithAddress()
 
         self.assertEquals(instr.mnemonic, "LDA")
         self.assertEquals(instr.address, [0x02, 0x01])

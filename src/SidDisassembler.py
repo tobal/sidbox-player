@@ -17,7 +17,7 @@ class Instruction():
 class SidDisassembler(object):
 
     def __init__(self):
-        self.Instructions = {
+        self.InstructionTypes = {
                 0xAD : ["LDA", AddressModes.ABSOLUTE]
                         }
         self.NumOfBytes = {
@@ -28,7 +28,7 @@ class SidDisassembler(object):
         return ""
 
     def disassembleInstruction(self, byte):
-        return self.Instructions[byte]
+        return self.InstructionTypes[byte]
 
     def getAddrModeNumOfBytes(self, addrMode):
         return self.NumOfBytes[addrMode]
@@ -42,9 +42,17 @@ class SidDisassembler(object):
         else:
             return [None]
 
+    def getInstructionWithAddress(self):
+        instrByte = self.getBytesFromFile(1)
+        instrType = self.disassembleInstruction(instrByte[0])
+        addrModeNumOfBytes = self.getAddrModeNumOfBytes(instrType[1])
+        address = self.getBytesFromFile(addrModeNumOfBytes)
+        instruction = self.makeInstruction(instrType, address)
+        return instruction
+
     def makeInstruction(self, instrType, address):
         instruction = Instruction()
         instruction.mnemonic = instrType[0]
-        instruction.address = address[::-1] # addresses are in a reversed manner in the assembly list
+        instruction.address = address[::-1]     # addresses are in a reversed manner in the assembly list
         return instruction
 
