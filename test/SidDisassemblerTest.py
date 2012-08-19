@@ -35,3 +35,7 @@ class SidDisassemblerTest(unittest.TestCase):
         self.assertEquals(instr.mnemonic, "LDA")
         self.assertEquals(instr.address, [0x02, 0x01])
 
+    def testInstructionComments(self):
+        comment = self.sut.getCommentForMnemonic("LDA")
+        self.assertEquals(comment, "Loads data from address into accumulator")
+

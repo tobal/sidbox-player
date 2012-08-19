@@ -33,6 +33,9 @@ class SidDisassembler(object):
     def getAddrModeNumOfBytes(self, addrMode):
         return self.NumOfBytes[addrMode]
 
+    def getCommentForMnemonic(self, mnemonic):
+        return ""
+
     def getBytesFromFile(self, numOfBytes):
         # TODO: do file handling
         if numOfBytes == 1:
