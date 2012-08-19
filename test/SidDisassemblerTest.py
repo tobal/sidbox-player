@@ -17,9 +17,7 @@ class SidDisassemblerTest(unittest.TestCase):
 
     def testAbsoluteAddressedLoadAccumulator(self):
         output = self.sut.disassembleInstruction(0xAD)
-        result = (output == ["LDA", AddressModes.ABSOLUTE])
-        # TODO: refactor
-        self.assertTrue(result)
+        self.assertEquals(output, ["LDA", AddressModes.ABSOLUTE])
 
     def testAbsoluteHasTwoByteAddress(self):
         numOfBytes = self.sut.getAddrModeNumOfBytes(AddressModes.ABSOLUTE)
