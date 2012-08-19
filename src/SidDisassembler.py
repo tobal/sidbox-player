@@ -20,8 +20,13 @@ class SidDisassembler(object):
         self.InstructionTypes = {
                 0xAD : ["LDA", AddressModes.ABSOLUTE]
                         }
+
         self.NumOfBytes = {
                 AddressModes.ABSOLUTE : 2
+                        }
+
+        self.Comments = {
+                "LDA" : "Loads data from address into accumulator"
                         }
 
     def getInstructionAsAssembly(self, byte):
@@ -34,7 +39,7 @@ class SidDisassembler(object):
         return self.NumOfBytes[addrMode]
 
     def getCommentForMnemonic(self, mnemonic):
-        return ""
+        return self.Comments[mnemonic]
 
     def getBytesFromFile(self, numOfBytes):
         # TODO: do file handling
