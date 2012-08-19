@@ -30,5 +30,11 @@ class SidDisassembler(object):
         return self.NumOfBytes[addrMode]
 
     def getBytesFromFile(self, numOfBytes):
-        return [None]
+        # TODO: do file handling
+        if numOfBytes == 1:
+            return [0xAD]
+        elif numOfBytes == 2:
+            return [0x01, 0x02]
+        else:
+            return [None]
 
