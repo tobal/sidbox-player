@@ -16,6 +16,9 @@ class SidDisassembler(object):
         self.Instructions = {
                 0xAD : ["LDA", AddressModes.ABSOLUTE]
                         }
+        self.NumOfBytes = {
+                AddressModes.ABSOLUTE : 2
+                        }
 
     def getInstructionAsAssembly(self, byte):
         return ""
@@ -24,5 +27,5 @@ class SidDisassembler(object):
         return self.Instructions[byte]
 
     def getAddrModeNumOfBytes(self, addrMode):
-        return 0
+        return self.NumOfBytes[addrMode]
 
