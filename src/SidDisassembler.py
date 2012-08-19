@@ -44,5 +44,7 @@ class SidDisassembler(object):
 
     def makeInstruction(self, instrType, address):
         instruction = Instruction()
+        instruction.mnemonic = instrType[0]
+        instruction.address = address[::-1] # addresses are in a reversed manner in the assembly list
         return instruction
 
