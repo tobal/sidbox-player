@@ -68,7 +68,7 @@ class SidDisassembler(object):
         else:
             return [None]
 
-    def getInstructionWithAddress(self):
+    def getNextInstruction(self):
         instrByte = self.getBytesFromFile(1)
         instrType = self.disassembleInstruction(instrByte[0])
         addrModeNumOfBytes = self.getAddrModeNumOfBytes(instrType[1])

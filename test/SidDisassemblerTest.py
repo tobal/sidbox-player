@@ -26,7 +26,7 @@ class SidDisassemblerTest(unittest.TestCase):
         self.assertEquals(len(twoBytes), 2)
 
     def testGetAnInstructionWithAddress(self):
-        instr = self.sut.getInstructionWithAddress()
+        instr = self.sut.getNextInstruction()
 
         self.assertEquals(instr.mnemonic, "LDA")
         self.assertEquals(instr.address, [0x02, 0x01])
@@ -36,7 +36,7 @@ class SidDisassemblerTest(unittest.TestCase):
         self.assertEquals(comment, "Loads data from address into accumulator")
 
     def testGetInstructionAsAssembly(self):
-        instruction = self.sut.getInstructionWithAddress()
+        instruction = self.sut.getNextInstruction()
         asmCode = self.sut.getInstructionAsAssembly(instruction)
         self.assertEquals(asmCode, "LDA 02 01   ; Loads data from address into accumulator")
 
