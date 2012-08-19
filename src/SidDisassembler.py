@@ -30,8 +30,25 @@ class SidDisassembler(object):
                 "LDA" : "Loads data from address into accumulator"
                         }
 
-    def getInstructionAsAssembly(self, byte):
-        return ""
+    def getInstructionAsAssembly(self, instruction):
+        asmCode = instruction.mnemonic
+        asmCode += " "
+        for byte in instruction.address:
+            asmCode += self.intToHexa(byte)
+            asmCode += " "
+        asmCode += "  ; "
+        asmCode += instruction.comment
+        return asmCode
+
+    def intToHexa(self, integer):
+        if integer > 0xFF:
+            integer = 0xFF
+        hexa = hex(integer)
+        if(len(hexa) == 3):
+            output = "0" + hexa[2]
+        else:
+            output = hexa[2:]
+        return output
 
     def disassembleInstruction(self, byte):
         return self.InstructionTypes[byte]

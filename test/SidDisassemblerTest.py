@@ -11,10 +11,6 @@ class SidDisassemblerTest(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def testOutputIsString(self):
-        output = self.sut.getInstructionAsAssembly(0xA1)
-        self.assertTrue( type(output) is str )
-
     def testAbsoluteAddressedLoadAccumulator(self):
         output = self.sut.disassembleInstruction(0xAD)
         self.assertEquals(output, ["LDA", AddressModes.ABSOLUTE])
@@ -42,5 +38,5 @@ class SidDisassemblerTest(unittest.TestCase):
     def testGetInstructionAsAssembly(self):
         instruction = self.sut.getInstructionWithAddress()
         asmCode = self.sut.getInstructionAsAssembly(instruction)
-        self.assertEquals(asmCode, "LDA 0x02 0x01   ; Loads data from address into accumulator")
+        self.assertEquals(asmCode, "LDA 02 01   ; Loads data from address into accumulator")
 
