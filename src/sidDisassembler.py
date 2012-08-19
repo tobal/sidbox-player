@@ -23,3 +23,6 @@ class SidDisassembler(object):
     def disassembleInstruction(self, byte):
         return self.Instructions[byte]
 
+    def getAddrModeNumOfBytes(self, addrMode):
+        return 0
+

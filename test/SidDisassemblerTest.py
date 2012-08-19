@@ -20,3 +20,7 @@ class SidDisassemblerTest(unittest.TestCase):
         result = (output == ["LDA", AddressModes.ABSOLUTE])
         self.assertTrue(result)
 
+    def testAbsoluteHasTwoByteAddress(self):
+        numOfBytes = self.sut.getAddrModeNumOfBytes(AddressModes.ABSOLUTE)
+        self.assertEquals(numOfBytes, 2)
+
