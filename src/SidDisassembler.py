@@ -13,6 +13,7 @@ class AddressModes():
 class Instruction():
     mnemonic = ""
     address = []
+    comment = ""
 
 class SidDisassembler(object):
 
@@ -62,5 +63,6 @@ class SidDisassembler(object):
         instruction = Instruction()
         instruction.mnemonic = instrType[0]
         instruction.address = address[::-1]     # addresses are in a reversed manner in the assembly list
+        instruction.comment = self.getCommentForMnemonic(instrType[0])
         return instruction
 
