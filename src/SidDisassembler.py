@@ -18,6 +18,7 @@ class Instruction():
 class SidDisassembler(object):
 
     def __init__(self):
+        self.sidFile = None
         self.InstructionTypes = {
                 0xAD : ["LDA", AddressModes.ABSOLUTE]
                         }
@@ -29,6 +30,9 @@ class SidDisassembler(object):
         self.Comments = {
                 "LDA" : "Loads data from address into accumulator"
                         }
+
+    def setSidFile(self, sidFile):
+        self.sidFile = sidFile
 
     def getInstructionAsAssembly(self, instruction):
         asmCode = instruction.mnemonic
@@ -60,13 +64,11 @@ class SidDisassembler(object):
         return self.Comments[mnemonic]
 
     def getBytesFromFile(self, numOfBytes):
-        # TODO: do file handling
-        if numOfBytes == 1:
-            return [0xAD]
-        elif numOfBytes == 2:
-            return [0x01, 0x02]
-        else:
-            return [None]
+        bytesAsString = self.sidFile.read(numOfBytes)
+        outputBytes = []
+        for char in bytesAsString:
+            outputBytes.append(ord(char))
+        return outputBytes
 
     def getNextInstruction(self):
         instrByte = self.getBytesFromFile(1)
