@@ -19,7 +19,7 @@ class SidDisassemblerTest(unittest.TestCase):
 
     def writeTestfile(self):
         testFile = file(self.testFileName, "wb")
-        testFile.write("\xad\x01\x02\x00")
+        testFile.write("\xad\x01\x02\x00\x02")
         testFile.close()
 
     def testAbsoluteAddressedLoadAccumulator(self):
