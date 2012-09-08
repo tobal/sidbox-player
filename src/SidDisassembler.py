@@ -1,17 +1,17 @@
 
 class AddressModes():
-    ABSOLUTE = 0
-    ZERO_PAGE = 1
-    ZERO_PAGE_X = 2
-    ZERO_PAGE_Y = 3
-    ACCUMULATOR = 4
-    IMMEDIATE = 5
-    INDIRECT_X = 6
-    INDIRECT_Y = 7
-    INDEXED_X = 8
-    INDEXED_Y = 9
-    RELATIVE = 10
-    IMPLIED = 11
+    ABSOLUTE = "Absolute"
+    ZERO_PAGE = "Zero page"
+    ZERO_PAGE_X = "Zero page with X"
+    ZERO_PAGE_Y = "Zero page with Y"
+    ACCUMULATOR = "Accumulator"
+    IMMEDIATE = "Immediate"
+    INDIRECT_X = "Indirect with X"
+    INDIRECT_Y = "Indirect with Y"
+    INDEXED_X = "Indexed with X"
+    INDEXED_Y = "Indexed with Y"
+    RELATIVE = "Relative"
+    IMPLIED = "Implied"
 
 class Instruction():
     mnemonic = ""
