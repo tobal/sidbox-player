@@ -50,7 +50,7 @@ class SidDisassemblerTest(unittest.TestCase):
         asmCode = self.sut.getInstructionAsAssembly(instruction)
         self.assertEquals(asmCode, "LDA 02 01   ; Loads data from address into accumulator")
 
-    def testInclusiveAddressing(self):
+    def testImpliedAddressing(self):
         self.sut.getBytesFromFile(3)
         ins = self.sut.getNextInstruction()
         self.assertEquals(ins.address, [])

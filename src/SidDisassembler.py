@@ -1,15 +1,17 @@
 
 class AddressModes():
     ABSOLUTE = 0
-    NULL_PAGE = 1
-    DIRECT = 2
-    INCLUSIVE = 3
-    RELATIVE = 4
-    INDIRECT = 5
-    ABS_INDEXED = 6
-    NULL_INDEXED = 7
-    INDIR_INDEXED = 8
-    INDEXED_INDIR = 9
+    ZERO_PAGE = 1
+    ZERO_PAGE_X = 2
+    ZERO_PAGE_Y = 3
+    ACCUMULATOR = 4
+    IMMEDIATE = 5
+    INDIRECT_X = 6
+    INDIRECT_Y = 7
+    INDEXED_X = 8
+    INDEXED_Y = 9
+    RELATIVE = 10
+    IMPLIED = 11
 
 class Instruction():
     mnemonic = ""
@@ -20,41 +22,25 @@ class SidDisassembler(object):
 
     def __init__(self):
         self.sidFile = None
-        self.InstructionTypes = {
-                0x00 : ["BRK", AddressModes.INCLUSIVE],
-                0x01 : ["ORA", AddressModes.INDEXED_INDIR],
-                0x05 : ["ORA", AddressModes.NULL_PAGE],
-                0x06 : ["ASL", AddressModes.NULL_PAGE],
-                0x08 : ["PHP", AddressModes.INCLUSIVE],
-                0x09 : ["ORA", AddressModes.DIRECT],
-                0x0A : ["ASL", AddressModes.DIRECT],
-                0x0D : ["ORA", AddressModes.ABSOLUTE],
-                0x0E : ["ASL", AddressModes.INCLUSIVE],
-                0x10 : ["BPL", AddressModes.ABSOLUTE],
-                0x11 : ["ORA", AddressModes.INDIR_INDEXED],
-                0x15 : ["ORA", AddressModes.NULL_INDEXED],
-                0x16 : ["ASL", AddressModes.NULL_INDEXED],
-                0x18 : ["CLC", AddressModes.INCLUSIVE],
-                0x19 : ["ORA", AddressModes.ABS_INDEXED],
-                0x1D : ["ORA", AddressModes.ABS_INDEXED],
-                0x1E : ["ASL", AddressModes.ABS_INDEXED],
-                0x20 : ["JSR", AddressModes.ABSOLUTE],
-                0x21 : ["AND", AddressModes.INDEXED_INDIR],
-                0x24 : ["BIT", AddressModes.NULL_PAGE],
-                0xAD : ["LDA", AddressModes.ABSOLUTE],
-                        }
 
         self.NumOfBytes = {
                 AddressModes.ABSOLUTE : 2,
-                AddressModes.NULL_PAGE : 1,
-                AddressModes.DIRECT : 1,
-                AddressModes.INCLUSIVE : 0,
+                AddressModes.ZERO_PAGE : 1,
+                AddressModes.ZERO_PAGE_X : 1,
+                AddressModes.ZERO_PAGE_Y : 1,
+                AddressModes.ACCUMULATOR : 0,
+                AddressModes.IMMEDIATE : 1,
+                AddressModes.INDIRECT_X : 1,
+                AddressModes.INDIRECT_Y : 1,
+                AddressModes.INDEXED_X : 2,
+                AddressModes.INDEXED_Y : 2,
                 AddressModes.RELATIVE : 1,
-                AddressModes.INDIRECT : 2,
-                AddressModes.ABS_INDEXED : 1,
-                AddressModes.NULL_INDEXED : 0,
-                AddressModes.INDIR_INDEXED : 1,
-                AddressModes.INDEXED_INDIR : 1
+                AddressModes.IMPLIED : 0
+                        }
+
+        self.InstructionTypes = {
+                0x00 : ["BRK", AddressModes.IMPLIED],
+                0xAD : ["LDA", AddressModes.ABSOLUTE],
                         }
 
         self.Comments = {
