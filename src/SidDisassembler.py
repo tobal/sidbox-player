@@ -17,6 +17,7 @@ class Instruction():
     mnemonic = ""
     address = []
     comment = ""
+    addressing = ""
 
 class SidDisassembler(object):
 
@@ -122,6 +123,8 @@ class SidDisassembler(object):
             asmCode += " "
         asmCode += "  ; "
         asmCode += instruction.comment
+        asmCode += ", addr: "
+        asmCode += instruction.addressing
         return asmCode
 
     def intToHexa(self, integer):
@@ -154,5 +157,6 @@ class SidDisassembler(object):
         instruction.mnemonic = instrType[0]
         instruction.address = address[::-1]     # addresses are in a reversed manner in the assembly list
         instruction.comment = self.getCommentForMnemonic(instrType[0])
+        instruction.addressing = instrType[1]
         return instruction
 
