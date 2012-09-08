@@ -2,7 +2,7 @@
 import unittest
 import os
 from src.SidDisassembler import SidDisassembler
-from src.SidDisassembler import AddressModes
+from src.SidCommon import AddressModes
 
 class SidDisassemblerTest(unittest.TestCase):
 
