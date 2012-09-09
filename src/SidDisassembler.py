@@ -1,4 +1,5 @@
 
+import os
 from src import LanguageData
 from src.SidCommon import Instruction
 from src.SidCommon import SidStruct
@@ -53,6 +54,12 @@ class SidDisassembler(object):
             outputBytes.append(ord(char))
         return outputBytes
 
+    def getBytesFromFileTillEnd(self):
+        fileSize = os.path.getsize(self.sidFile.name)
+        bytesToRead = fileSize - self.sidFile.tell()
+        outputBytes = self.getBytesFromFile(bytesToRead)
+        return outputBytes
+
     def getNextInstruction(self):
         instrByte = self.getBytesFromFile(1)
         instrType = self.disassembleInstruction(instrByte[0])
@@ -71,5 +78,8 @@ class SidDisassembler(object):
 
     def readSidFile(self):
         sidStruct = SidStruct()
+        sidStruct.header = self.getBytesFromFile(124)
+        sidStruct.offset = self.getBytesFromFile(2)
+        sidStruct.data = self.getBytesFromFileTillEnd()
         return sidStruct
 

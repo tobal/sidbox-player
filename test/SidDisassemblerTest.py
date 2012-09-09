@@ -80,11 +80,11 @@ class SidDisassemblerTest(unittest.TestCase):
         self.assertEquals(len(sidStruct.offset), 2)
         self.assertEquals(len(sidStruct.data), 100)
         for byte in sidStruct.header:
-            self.assertEquals(byte, "\x00")
+            self.assertEquals(byte, 0x00)
         for byte in sidStruct.offset:
-            self.assertEquals(byte, "\x88")
+            self.assertEquals(byte, 0x88)
         for byte in sidStruct.data:
-            self.assertEquals(byte, "\xFF")
+            self.assertEquals(byte, 0xFF)
         self.sut.setSidFile(self.testFile)
         self.deleteSidFile(sidFile)
 
