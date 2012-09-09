@@ -8,6 +8,7 @@ class SidDisassemblerTest(unittest.TestCase):
 
     def setUp(self):
         self.testFileName = "testfile"
+        self.testSidFileName = "testsidfile"
         self.sut = SidDisassembler()    # system under test
         self.writeTestfile()
         self.testFile = file(self.testFileName, "rb")
@@ -54,4 +55,33 @@ class SidDisassemblerTest(unittest.TestCase):
         self.sut.getBytesFromFile(3)
         ins = self.sut.getNextInstruction()
         self.assertEquals(ins.address, [])
+
+    def createSidFile(self):
+        sidFile = file(self.testSidFileName, "wb")
+        for byte in range(0, 124):
+            sidFile.write("\x00")
+        for byte in range(0, 2):
+            sidFile.write("\x88")
+        for byte in range(0, 100):
+            sidFile.write("\xFF")
+        sidFile.close()
+        sidFile = file(self.testSidFileName, "rb")
+        return sidFile
+
+    def deleteSidFile(self, sidFile):
+        sidFile.close()
+        os.remove(self.testSidFileName)
+
+    def testReadSidFile(self):
+        sidFile = self.createSidFile()
+        self.sut.setSidFile(sidFile)
+        sidStruct = self.sut.readSidFile()
+        for byte in sidStruct.header:
+            self.assertEquals(byte, "\x00")
+        for byte in sidStruct.offset:
+            self.assertEquals(byte, "\x88")
+        for byte in sidStruct.data:
+            self.assertEquals(byte, "\xFF")
+        self.sut.setSidFile(self.testFile)
+        self.deleteSidFile(sidFile)
 
