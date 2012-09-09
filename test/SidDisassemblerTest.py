@@ -39,7 +39,19 @@ class SidDisassemblerTest(unittest.TestCase):
         numOfBytes = self.sut.getAddrModeNumOfBytes(AddressModes.ABSOLUTE)
         self.assertEquals(numOfBytes, 2)
 
+    def testReadSidFile(self):
+        self.assertEquals(len(self.sut.sidStruct.header), 124)
+        self.assertEquals(len(self.sut.sidStruct.offset), 2)
+        self.assertEquals(len(self.sut.sidStruct.data), 105)
+        for byte in self.sut.sidStruct.header:
+            self.assertEquals(byte, 0x00)
+        for byte in self.sut.sidStruct.offset:
+            self.assertEquals(byte, 0x88)
+        for byte in self.sut.sidStruct.data[5:]:
+            self.assertEquals(byte, 0xFF)
+
     def testGetBytesFromFile(self):
+        self.sut.sidFile.seek(0)
         byte = self.sut.getBytesFromFile(1)
         twoBytes = self.sut.getBytesFromFile(2)
         self.assertEquals(len(byte), 1)
@@ -60,19 +72,7 @@ class SidDisassemblerTest(unittest.TestCase):
         self.assertEquals(asmCode, "LDA 02 01   ; Loads data from address into accumulator, addr: Absolute")
 
     def testImpliedAddressing(self):
-        self.sut.getBytesFromFile(3)
+        self.sut.getNextInstruction()
         ins = self.sut.getNextInstruction()
         self.assertEquals(ins.address, [])
-
-    def testReadSidFile(self):
-        sidStruct = self.sut.readSidFile()
-        self.assertEquals(len(sidStruct.header), 124)
-        self.assertEquals(len(sidStruct.offset), 2)
-        self.assertEquals(len(sidStruct.data), 105)
-        for byte in sidStruct.header:
-            self.assertEquals(byte, 0x00)
-        for byte in sidStruct.offset:
-            self.assertEquals(byte, 0x88)
-        for byte in sidStruct.data[5:]:
-            self.assertEquals(byte, 0xFF)
 

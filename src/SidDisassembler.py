@@ -8,6 +8,7 @@ class SidDisassembler(object):
 
     def __init__(self):
         self.sidFile = None
+        self.dataPointer = 0
 
         self.NumOfBytes = LanguageData.NumOfBytes
         self.InstructionTypes = LanguageData.InstructionTypes
@@ -15,6 +16,13 @@ class SidDisassembler(object):
 
     def setSidFile(self, sidFile):
         self.sidFile = sidFile
+        self.readSidFile()
+
+    def readSidFile(self):
+        self.sidStruct = SidStruct()
+        self.sidStruct.header = self.getBytesFromFile(124)
+        self.sidStruct.offset = self.getBytesFromFile(2)
+        self.sidStruct.data = self.getBytesFromFileTillEnd()
 
     def disassembleInstruction(self, byte):
         return self.InstructionTypes[byte]
@@ -60,11 +68,16 @@ class SidDisassembler(object):
         outputBytes = self.getBytesFromFile(bytesToRead)
         return outputBytes
 
+    def getNextDataBytes(self, numOfBytes):
+        pnt = self.dataPointer
+        self.dataPointer += numOfBytes
+        return self.sidStruct.data[pnt:pnt + numOfBytes]
+
     def getNextInstruction(self):
-        instrByte = self.getBytesFromFile(1)
+        instrByte = self.getNextDataBytes(1)
         instrType = self.disassembleInstruction(instrByte[0])
         addrModeNumOfBytes = self.getAddrModeNumOfBytes(instrType[1])
-        address = self.getBytesFromFile(addrModeNumOfBytes)
+        address = self.getNextDataBytes(addrModeNumOfBytes)
         instruction = self.makeInstruction(instrType, address)
         return instruction
 
@@ -75,11 +88,4 @@ class SidDisassembler(object):
         instruction.comment = self.getCommentForMnemonic(instrType[0])
         instruction.addressing = instrType[1]
         return instruction
-
-    def readSidFile(self):
-        sidStruct = SidStruct()
-        sidStruct.header = self.getBytesFromFile(124)
-        sidStruct.offset = self.getBytesFromFile(2)
-        sidStruct.data = self.getBytesFromFileTillEnd()
-        return sidStruct
 
