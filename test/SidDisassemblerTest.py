@@ -8,20 +8,28 @@ class SidDisassemblerTest(unittest.TestCase):
 
     def setUp(self):
         self.testFileName = "testfile"
-        self.testSidFileName = "testsidfile"
         self.sut = SidDisassembler()    # system under test
-        self.writeTestfile()
+        self.createSidFile()
         self.testFile = file(self.testFileName, "rb")
         self.sut.setSidFile(self.testFile)
 
     def tearDown(self):
+        self.deleteSidFile()
+
+    def createSidFile(self):
+        self.testFile = file(self.testFileName, "wb")
+        for byte in range(0, 124):
+            self.testFile.write("\x00")
+        for byte in range(0, 2):
+            self.testFile.write("\x88")
+        self.testFile.write("\xad\x01\x02\x00\x02")
+        for byte in range(0, 100):
+            self.testFile.write("\xFF")
+        self.testFile.close()
+
+    def deleteSidFile(self):
         self.testFile.close()
         os.remove(self.testFileName)
-
-    def writeTestfile(self):
-        testFile = file(self.testFileName, "wb")
-        testFile.write("\xad\x01\x02\x00\x02")
-        testFile.close()
 
     def testAbsoluteAddressedLoadAccumulator(self):
         output = self.sut.disassembleInstruction(0xAD)
@@ -56,35 +64,15 @@ class SidDisassemblerTest(unittest.TestCase):
         ins = self.sut.getNextInstruction()
         self.assertEquals(ins.address, [])
 
-    def createSidFile(self):
-        sidFile = file(self.testSidFileName, "wb")
-        for byte in range(0, 124):
-            sidFile.write("\x00")
-        for byte in range(0, 2):
-            sidFile.write("\x88")
-        for byte in range(0, 100):
-            sidFile.write("\xFF")
-        sidFile.close()
-        sidFile = file(self.testSidFileName, "rb")
-        return sidFile
-
-    def deleteSidFile(self, sidFile):
-        sidFile.close()
-        os.remove(self.testSidFileName)
-
     def testReadSidFile(self):
-        sidFile = self.createSidFile()
-        self.sut.setSidFile(sidFile)
         sidStruct = self.sut.readSidFile()
         self.assertEquals(len(sidStruct.header), 124)
         self.assertEquals(len(sidStruct.offset), 2)
-        self.assertEquals(len(sidStruct.data), 100)
+        self.assertEquals(len(sidStruct.data), 105)
         for byte in sidStruct.header:
             self.assertEquals(byte, 0x00)
         for byte in sidStruct.offset:
             self.assertEquals(byte, 0x88)
-        for byte in sidStruct.data:
+        for byte in sidStruct.data[5:]:
             self.assertEquals(byte, 0xFF)
-        self.sut.setSidFile(self.testFile)
-        self.deleteSidFile(sidFile)
 
