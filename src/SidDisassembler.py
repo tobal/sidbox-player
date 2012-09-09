@@ -1,6 +1,7 @@
 
 from src import LanguageData
 from src.SidCommon import Instruction
+from src.SidCommon import SidStruct
 
 class SidDisassembler(object):
 
@@ -67,4 +68,8 @@ class SidDisassembler(object):
         instruction.comment = self.getCommentForMnemonic(instrType[0])
         instruction.addressing = instrType[1]
         return instruction
+
+    def readSidFile(self):
+        sidStruct = SidStruct()
+        return sidStruct
 

@@ -19,3 +19,9 @@ class Instruction():
     address = []
     comment = ""
     addressing = ""
+
+class SidStruct():
+    header = []
+    offset = []
+    data = []
+
