@@ -74,6 +74,8 @@ class SidDisassembler(object):
         return self.sidStruct.data[pnt:pnt + numOfBytes]
 
     def getNextInstruction(self):
+        if self.dataPointer == len(self.sidStruct.data):
+            return False
         instrByte = self.getNextDataBytes(1)
         instrType = self.disassembleInstruction(instrByte[0])
         addrModeNumOfBytes = self.getAddrModeNumOfBytes(instrType[1])

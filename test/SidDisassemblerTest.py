@@ -22,9 +22,7 @@ class SidDisassemblerTest(unittest.TestCase):
             self.testFile.write("\x00")
         for byte in range(0, 2):
             self.testFile.write("\x88")
-        self.testFile.write("\xad\x01\x02\x00\x02")
-        for byte in range(0, 100):
-            self.testFile.write("\xFF")
+        self.testFile.write("\xad\x01\x02\x00")
         self.testFile.close()
 
     def deleteSidFile(self):
@@ -42,13 +40,11 @@ class SidDisassemblerTest(unittest.TestCase):
     def testReadSidFile(self):
         self.assertEquals(len(self.sut.sidStruct.header), 124)
         self.assertEquals(len(self.sut.sidStruct.offset), 2)
-        self.assertEquals(len(self.sut.sidStruct.data), 105)
+        self.assertEquals(len(self.sut.sidStruct.data), 4)
         for byte in self.sut.sidStruct.header:
             self.assertEquals(byte, 0x00)
         for byte in self.sut.sidStruct.offset:
             self.assertEquals(byte, 0x88)
-        for byte in self.sut.sidStruct.data[5:]:
-            self.assertEquals(byte, 0xFF)
 
     def testGetBytesFromFile(self):
         self.sut.sidFile.seek(0)
@@ -75,4 +71,12 @@ class SidDisassemblerTest(unittest.TestCase):
         self.sut.getNextInstruction()
         ins = self.sut.getNextInstruction()
         self.assertEquals(ins.address, [])
+
+    def testReadWholeFileAndGetAsm(self):
+        printOutput = ""
+        instruction = self.sut.getNextInstruction()
+        while instruction:
+            printOutput += self.sut.getInstructionAsAssembly(instruction) + "\n"
+            instruction = self.sut.getNextInstruction()
+        self.assertEquals(printOutput, "LDA 02 01   ; Loads data from address into accumulator, addr: Absolute\nBRK   ; Cause software interrupt, addr: Implied\n")
 
