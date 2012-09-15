@@ -91,3 +91,11 @@ class SidDisassembler(object):
         instruction.addressing = instrType[1]
         return instruction
 
+    def getSidFileAsAssembly(self):
+        printOutput = ""
+        instruction = self.getNextInstruction()
+        while instruction:
+            printOutput += self.getInstructionAsAssembly(instruction) + "\n"
+            instruction = self.getNextInstruction()
+        return printOutput
+

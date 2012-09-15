@@ -73,10 +73,6 @@ class SidDisassemblerTest(unittest.TestCase):
         self.assertEquals(ins.address, [])
 
     def testReadWholeFileAndGetAsm(self):
-        printOutput = ""
-        instruction = self.sut.getNextInstruction()
-        while instruction:
-            printOutput += self.sut.getInstructionAsAssembly(instruction) + "\n"
-            instruction = self.sut.getNextInstruction()
+        printOutput = self.sut.getSidFileAsAssembly()
         self.assertEquals(printOutput, "LDA 02 01   ; Loads data from address into accumulator, addr: Absolute\nBRK   ; Cause software interrupt, addr: Implied\n")
 
