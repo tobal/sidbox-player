@@ -10,10 +10,10 @@ class SidDisassemblerTest(unittest.TestCase):
         self.testFileName = "testfile"
         self.sut = SidDisassembler()    # system under test
         self.createSidFile()
-        self.testFile = file(self.testFileName, "rb")
-        self.sut.setSidFile(self.testFile)
+        self.sut.openSidFile(self.testFileName)
 
     def tearDown(self):
+        self.sut.closeSidFile()
         self.deleteSidFile()
 
     def createSidFile(self):
@@ -26,7 +26,6 @@ class SidDisassemblerTest(unittest.TestCase):
         self.testFile.close()
 
     def deleteSidFile(self):
-        self.testFile.close()
         os.remove(self.testFileName)
 
     def testAbsoluteAddressedLoadAccumulator(self):

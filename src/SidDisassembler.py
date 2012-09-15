@@ -99,3 +99,10 @@ class SidDisassembler(object):
             instruction = self.getNextInstruction()
         return printOutput
 
+    def openSidFile(self, sidFilename):
+        openedFile = file(sidFilename, "rb")
+        self.setSidFile(openedFile)
+
+    def closeSidFile(self):
+        self.sidFile.close()
+
