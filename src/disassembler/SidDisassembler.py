@@ -7,6 +7,9 @@ from src.disassembler.SidCommon import SidStruct
 
 class SidDisassembler(object):
 
+    HEADER_SIZE = 124
+    OFFSET_SIZE = 2
+
     def __init__(self):
         self.sidFile = None
         self.dataPointer = 0
@@ -21,8 +24,8 @@ class SidDisassembler(object):
 
     def readSidFile(self):
         self.sidStruct = SidStruct()
-        self.sidStruct.header = self.getBytesFromFile(124)
-        self.sidStruct.offset = self.getBytesFromFile(2)
+        self.sidStruct.header = self.getBytesFromFile(self.HEADER_SIZE)
+        self.sidStruct.offset = self.getBytesFromFile(self.OFFSET_SIZE)
         self.sidStruct.data = self.getBytesFromFileTillEnd()
 
     def disassembleInstruction(self, byte):

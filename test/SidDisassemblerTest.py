@@ -6,6 +6,9 @@ from src.disassembler.SidCommon import AddressModes
 
 class SidDisassemblerTest(unittest.TestCase):
 
+    HEADER_SIZE = 124
+    OFFSET_SIZE = 2
+
     def setUp(self):
         self.testFileName = "testfile"
         self.sut = SidDisassembler()    # system under test
@@ -18,9 +21,9 @@ class SidDisassemblerTest(unittest.TestCase):
 
     def createSidFile(self):
         self.testFile = file(self.testFileName, "wb")
-        for byte in range(0, 124):
+        for byte in range(0, self.HEADER_SIZE):
             self.testFile.write("\x00")
-        for byte in range(0, 2):
+        for byte in range(0, self.OFFSET_SIZE):
             self.testFile.write("\x88")
         self.testFile.write("\xad\x01\x02\x00")
         self.testFile.close()
@@ -37,8 +40,8 @@ class SidDisassemblerTest(unittest.TestCase):
         self.assertEquals(numOfBytes, 2)
 
     def testReadSidFile(self):
-        self.assertEquals(len(self.sut.sidStruct.header), 124)
-        self.assertEquals(len(self.sut.sidStruct.offset), 2)
+        self.assertEquals(len(self.sut.sidStruct.header), self.HEADER_SIZE)
+        self.assertEquals(len(self.sut.sidStruct.offset), self.OFFSET_SIZE)
         self.assertEquals(len(self.sut.sidStruct.data), 4)
         for byte in self.sut.sidStruct.header:
             self.assertEquals(byte, 0x00)
