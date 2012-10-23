@@ -1,6 +1,5 @@
 
 import os
-import sys
 from src.disassembler import LanguageData
 from src.disassembler.SidCommon import Instruction
 from src.disassembler.SidCommon import SidStruct
@@ -10,7 +9,7 @@ class SidDisassembler(object):
     HEADER_SIZE = 124
     OFFSET_SIZE = 2
 
-    def __init__(self):
+    def __init__(self, sidFilename):
         self.sidFile = None
         self.dataPointer = 0
 
@@ -18,21 +17,32 @@ class SidDisassembler(object):
         self.InstructionTypes = LanguageData.InstructionTypes
         self.Comments = LanguageData.Comments
 
-    def setSidFile(self, sidFile):
-        self.sidFile = sidFile
-        self.readSidFile()
+        with file(sidFilename, "rb") as sidFile:
+            self.readSidFile(sidFile)
 
-    def readSidFile(self):
+    def readSidFile(self, sidFile):
         self.sidStruct = SidStruct()
-        self.sidStruct.header = self.getBytesFromFile(self.HEADER_SIZE)
-        self.sidStruct.offset = self.getBytesFromFile(self.OFFSET_SIZE)
-        self.sidStruct.data = self.getBytesFromFileTillEnd()
+        self.sidStruct.header = self.getBytesFromFile(sidFile, self.HEADER_SIZE)
+        self.sidStruct.offset = self.getBytesFromFile(sidFile, self.OFFSET_SIZE)
+        self.sidStruct.data = self.getBytesFromFileTillEnd(sidFile)
+
+    def getBytesFromFile(self, sidFile, numOfBytes):
+        bytesAsString = sidFile.read(numOfBytes)
+        outputBytes = []
+        for char in bytesAsString:
+            outputBytes.append(ord(char))
+        return outputBytes
+
+    def getBytesFromFileTillEnd(self, sidFile):
+        fileSize = os.path.getsize(sidFile.name)
+        bytesToRead = fileSize - sidFile.tell()
+        outputBytes = self.getBytesFromFile(sidFile, bytesToRead)
+        return outputBytes
 
     def disassembleInstruction(self, byte):
         try:
             instrType = self.InstructionTypes[byte]
         except KeyError:
-            print "Unknown instruction: " + str(byte)
             instrType = False
         return instrType
 
@@ -63,19 +73,6 @@ class SidDisassembler(object):
         else:
             output = hexa[2:]
         return output
-
-    def getBytesFromFile(self, numOfBytes):
-        bytesAsString = self.sidFile.read(numOfBytes)
-        outputBytes = []
-        for char in bytesAsString:
-            outputBytes.append(ord(char))
-        return outputBytes
-
-    def getBytesFromFileTillEnd(self):
-        fileSize = os.path.getsize(self.sidFile.name)
-        bytesToRead = fileSize - self.sidFile.tell()
-        outputBytes = self.getBytesFromFile(bytesToRead)
-        return outputBytes
 
     def getNextDataBytes(self, numOfBytes):
         pnt = self.dataPointer
@@ -109,11 +106,4 @@ class SidDisassembler(object):
             printOutput += self.getInstructionAsAssembly(instruction) + "\n"
             instruction = self.getNextInstruction()
         return printOutput
-
-    def openSidFile(self, sidFilename):
-        openedFile = file(sidFilename, "rb")
-        self.setSidFile(openedFile)
-
-    def closeSidFile(self):
-        self.sidFile.close()
 

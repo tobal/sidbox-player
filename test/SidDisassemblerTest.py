@@ -11,12 +11,10 @@ class SidDisassemblerTest(unittest.TestCase):
 
     def setUp(self):
         self.testFileName = "testfile"
-        self.sut = SidDisassembler()    # system under test
         self.createSidFile()
-        self.sut.openSidFile(self.testFileName)
+        self.sut = SidDisassembler(self.testFileName)    # system under test
 
     def tearDown(self):
-        self.sut.closeSidFile()
         self.deleteSidFile()
 
     def createSidFile(self):
@@ -49,11 +47,12 @@ class SidDisassemblerTest(unittest.TestCase):
             self.assertEquals(byte, 0x88)
 
     def testGetBytesFromFile(self):
-        self.sut.sidFile.seek(0)
-        byte = self.sut.getBytesFromFile(1)
-        twoBytes = self.sut.getBytesFromFile(2)
+        testFile = file(self.testFileName, "rb")
+        byte = self.sut.getBytesFromFile(testFile, 1)
+        twoBytes = self.sut.getBytesFromFile(testFile, 2)
         self.assertEquals(len(byte), 1)
         self.assertEquals(len(twoBytes), 2)
+        testFile.close()
 
     def testGetAnInstructionWithAddress(self):
         instr = self.sut.getNextInstruction()
