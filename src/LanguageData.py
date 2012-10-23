@@ -227,5 +227,6 @@ Comments = {
                 "CMP" : "Compares accumulator with specific byte (acc - byte)",
                 "CPX" : "Compares X register with specific byte (X - byte)",
                 "CPY" : "Compares Y register with specific byte (Y - byte)",
-                "NOP" : "No operation"
+                "NOP" : "No operation",
+                "LSR" : "UNKNOWN"
                         }

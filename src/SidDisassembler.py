@@ -1,5 +1,6 @@
 
 import os
+import sys
 from src import LanguageData
 from src.SidCommon import Instruction
 from src.SidCommon import SidStruct
@@ -25,7 +26,12 @@ class SidDisassembler(object):
         self.sidStruct.data = self.getBytesFromFileTillEnd()
 
     def disassembleInstruction(self, byte):
-        return self.InstructionTypes[byte]
+        try:
+            instrType = self.InstructionTypes[byte]
+        except KeyError:
+            print "Unknown instruction: " + str(byte)
+            instrType = False
+        return instrType
 
     def getAddrModeNumOfBytes(self, addrMode):
         return self.NumOfBytes[addrMode]
@@ -78,6 +84,8 @@ class SidDisassembler(object):
             return False
         instrByte = self.getNextDataBytes(1)
         instrType = self.disassembleInstruction(instrByte[0])
+        if not instrType:
+            return False
         addrModeNumOfBytes = self.getAddrModeNumOfBytes(instrType[1])
         address = self.getNextDataBytes(addrModeNumOfBytes)
         instruction = self.makeInstruction(instrType, address)
@@ -105,4 +113,8 @@ class SidDisassembler(object):
 
     def closeSidFile(self):
         self.sidFile.close()
+
+disas = SidDisassembler()
+disas.openSidFile("test.sid")
+print disas.getSidFileAsAssembly()
 
