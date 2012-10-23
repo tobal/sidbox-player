@@ -114,7 +114,3 @@ class SidDisassembler(object):
     def closeSidFile(self):
         self.sidFile.close()
 
-disas = SidDisassembler()
-disas.openSidFile("test.sid")
-print disas.getSidFileAsAssembly()
-
