@@ -1,8 +1,8 @@
 
 import unittest
 import os
-from src.SidDisassembler import SidDisassembler
-from src.SidCommon import AddressModes
+from src.disassembler.SidDisassembler import SidDisassembler
+from src.disassembler.SidCommon import AddressModes
 
 class SidDisassemblerTest(unittest.TestCase):
 
